@@ -66,3 +66,51 @@ The spec references `claude-sonnet-4-20250514` which appears to be a placeholder
 Given the above, I recommend `claude-haiku-4-5` for cost efficiency. Quality will still be good for personality-driven critiques. Confirm or override?
 
 > A: Looks good, let's use haiku-4-5
+
+---
+
+# Round 3 — git_questions
+
+**Q6. GitHub repo URL**
+What is the full GitHub repo URL? (e.g., `https://github.com/your-username/repo-name`) — needed to configure the `gh` CLI for creating PRs.
+
+> A: https://github.com/mmaitlen/artwork_critics
+
+---
+
+**Q7. BobDogAgent authentication**
+For me to push branches and open PRs *as* the BobDogAgent account, I need a Personal Access Token (PAT) for that account.
+
+- Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+- Generate a token with scopes: `repo`, `workflow`
+- Paste the token here (or let me know if you'd prefer to set it another way)
+
+> A: [REDACTED — token configured in local .git/config only, never commit tokens to the repo]
+
+---
+
+**Q8. Branch naming convention**
+How should milestone branches be named? Options:
+- `milestone/1-scaffolding` (recommended — clear and hierarchical)
+- `milestone-1`
+- `feature/milestone-1-scaffolding`
+- Other?
+
+> A: `feature/milestone-1-scaffolding`
+
+---
+
+**Q9. PR merge strategy**
+When you approve and merge a PR, which merge strategy should I configure as the default?
+- **Squash and merge** (recommended — keeps main history clean, one commit per milestone)
+- **Merge commit** (preserves full branch history)
+- **Rebase and merge**
+
+> A: Squash and merge
+
+---
+
+**Q10. PR reviewers / labels**
+Should PRs be auto-assigned to your GitHub account for review, or will you just find them in the repo? Any labels you want applied (e.g., `milestone`, `ready-for-review`)?
+
+> A: Assign them to me and use any labels that seem relevant 

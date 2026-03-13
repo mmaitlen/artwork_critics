@@ -30,10 +30,12 @@
   - `mocktail`, `bloc_test` — test utilities
 - [x] **1.4** Configure `get_it` service locator (`core/di/injection.dart`)
 - [x] **1.5** Configure `go_router` with initial placeholder route (`core/router/app_router.dart`)
-- [ ] **1.6** Firebase project init:
-  - `firebase login`
-  - `firebase init` — select Hosting + Functions (Node.js)
-  - Confirm `firebase.json`, `.firebaserc` generated
+- [!] **1.6** Firebase project init — **manual step required by developer**:
+  ```bash
+  firebase login          # opens browser
+  firebase init           # select: Hosting, Functions (Node.js 20)
+  ```
+  When prompted: public directory = `build/web`, single-page app rewrite = yes, Functions language = JavaScript
 - [x] **1.7** Smoke test passes: `flutter test` — 1/1 passing
 - [x] **1.8** Update this file — mark completed tasks
 
