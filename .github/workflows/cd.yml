@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
-    name: Build & Deploy to Firebase Hosting
+    name: Build & Deploy to Firebase
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Install dependencies
+      - name: Install Flutter dependencies
         run: flutter pub get
 
       - name: Analyze
@@ -30,19 +30,22 @@ jobs:
       - name: Build web
         run: flutter build web --release
 
-      # ----------------------------------------------------------------
-      # Firebase deploy — requires two GitHub secrets to be configured:
-      #
-      #   FIREBASE_TOKEN      — from: firebase login:ci  (run locally)
-      #   FIREBASE_PROJECT_ID — your Firebase project ID (e.g. artwork-critics-12345)
-      #
-      # Add secrets at: GitHub repo → Settings → Secrets and variables → Actions
-      # Uncomment this step after Firebase project is initialized.
-      # ----------------------------------------------------------------
-      # - name: Deploy to Firebase Hosting
-      #   uses: FirebaseExtended/action-hosting-deploy@v0
-      #   with:
-      #     repoToken: ${{ secrets.GITHUB_TOKEN }}
-      #     firebaseServiceAccount: ${{ secrets.FIREBASE_TOKEN }}
-      #     projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
-      #     channelId: live
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Install Functions dependencies
+        run: npm --prefix functions install
+
+      # Skipped if FIREBASE_TOKEN secret is not configured.
+      # To enable: run `firebase login:ci` locally and add the printed token
+      # as a GitHub secret named FIREBASE_TOKEN.
+      # GitHub repo → Settings → Secrets and variables → Actions → New secret
+      - name: Deploy to Firebase
+        if: ${{ env.FIREBASE_TOKEN != '' }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting,functions --project artwork-critique
