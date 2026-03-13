@@ -4,6 +4,24 @@
 
 ---
 
+## Developer Action Items
+Tasks that require manual action outside of code changes.
+
+- [ ] **PAT-1** — Rotate the BobDogAgent Personal Access Token
+  The BobDogAgent PAT was entered into `questions.md` during setup. GitHub's push protection caught it before it reached the remote, and the token was redacted from the commit. However, the token was briefly exposed in plaintext in a local file and should be considered compromised.
+
+  **Steps:**
+  1. Log into the BobDogAgent GitHub account
+  2. Go to Settings → Developer settings → Personal access tokens → Tokens (classic)
+  3. Regenerate (rotate) the token — keep the same scopes: `repo`, `workflow`
+  4. Update the local git remote with the new token:
+     ```bash     
+     git remote set-url bobdog https://BobDogAgent:<NEW_TOKEN>@github.com/mmaitlen/artwork_critics.git
+     ```
+  5. Do not paste the new token into any tracked file — `.git/config` only
+
+---
+
 ## Milestone 1 — Project Scaffolding & Architecture Shell
 **Goal:** Empty Flutter web app with correct folder structure, dependencies, and Firebase project wired up. No counter app boilerplate.
 
