@@ -9,7 +9,7 @@ Tasks that require manual action outside of code changes.
 
 - [x] **PAT-1** — Rotate the BobDogAgent Personal Access Token *(completed)*
 
-- [ ] **PAT-2** — Acquire Anthropic API Key and store in Firebase
+- [x] **PAT-2** — Acquire Anthropic API Key and store in Firebase
 
   **Steps:**
   1. Go to https://console.anthropic.com and sign up or log in
@@ -30,13 +30,13 @@ Tasks that require manual action outside of code changes.
   **Cost:** No monthly fee — pay-as-you-go only. At current usage estimates
   (~$0.004/session with Haiku), cost is negligible at low traffic.
 
-- [ ] **FB-1** — Upgrade Firebase project to Blaze (pay-as-you-go) plan
+- [x] **FB-1** — Upgrade Firebase project to Blaze (pay-as-you-go) plan
 
   Required before Cloud Functions can be deployed.
   Go to https://console.firebase.google.com → project `artwork-critique`
   → Spark plan badge (bottom left) → Upgrade to Blaze.
 
-- [ ] **FB-2** — Add `FIREBASE_TOKEN` secret to GitHub for CD pipeline
+- [x] **FB-2** — Add `FIREBASE_TOKEN` secret to GitHub for CD pipeline
 
   This enables automatic deploys to Firebase Hosting on every merge to `main`.
   1. Run locally: `firebase login:ci`
@@ -90,22 +90,14 @@ Tasks that require manual action outside of code changes.
   - Validates input, maps persona ID to system prompt
   - Calls Claude Haiku 4.5 vision API with `max_tokens: 500`
   - Returns `{ critique: string }`
-- [!] **2.3** Store Anthropic API key in Firebase Secret Manager — **see PAT-2 above**
-  ```bash
-  firebase functions:secrets:set ANTHROPIC_API_KEY
-  ```
+- [x] **2.3** Anthropic API key stored in Firebase Secret Manager
 - [x] **2.4** `maxInstances: 10` set via `setGlobalOptions` for cost control
-- [!] **2.5** Deploy function — **blocked on PAT-2 (API key) and FB-1 (Blaze plan)**
-  ```bash
-  firebase deploy --only functions
-  ```
-- [ ] **2.6** Smoke test with curl — verify all three persona IDs return valid responses:
-  ```bash
-  curl -X POST https://us-central1-artwork-critique.cloudfunctions.net/critique \
-    -H "Content-Type: application/json" \
-    -d '{"imageBase64":"<base64>","personaId":"buyer"}'
-  ```
-- [ ] **2.7** Update this file — mark completed tasks
+- [x] **2.5** Function deployed: `https://critique-t26hrklwwa-uc.a.run.app`
+  - Note: 2nd gen Cloud Functions use Cloud Run URLs, not cloudfunctions.net
+  - Public invocation enabled via `roles/run.invoker` on `allUsers`
+  - Artifact cleanup policy set (1-day retention) to limit storage costs
+- [x] **2.6** Smoke test passed — all three personas return valid critiques via curl
+- [x] **2.7** Update this file — mark completed tasks
 
 ---
 
