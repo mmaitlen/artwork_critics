@@ -68,10 +68,19 @@ Rules:
 
 ## Pull Requests
 
+### Pre-PR checklist
+Run both checks and fix all issues before opening a PR. Do not open a PR with failures or lint warnings.
+
+```bash
+flutter analyze   # zero issues required
+flutter test      # all tests must pass
+```
+
 ### When to open a PR
 Open a PR when a milestone is fully complete:
 - All milestone tasks checked off in `task.md`
-- All tests passing (`flutter test`)
+- `flutter analyze` — zero issues
+- `flutter test` — all tests passing
 - No known regressions
 
 ### PR process
@@ -110,7 +119,8 @@ Open a PR when a milestone is fully complete:
 ## Code Review Expectations
 
 - Agents should self-review before opening a PR: no debug prints, no dead code, no placeholder TODOs unless explicitly tracked in `task.md`
-- Tests must pass before a PR is opened — do not open a PR with failing tests
+- `flutter analyze` must report zero issues — do not open a PR with lint warnings or errors
+- `flutter test` must pass — do not open a PR with failing tests
 - PRs should be scoped to a single milestone; do not bundle multiple milestones into one PR
 
 ---
@@ -123,6 +133,32 @@ Recommended branch protection rules to configure in GitHub repo settings:
 - Require at least 1 approval
 - Dismiss stale pull request approvals when new commits are pushed
 - Do not allow bypassing the above settings
+
+---
+
+## CI/CD (GitHub Actions)
+
+### CI — `.github/workflows/ci.yml`
+Runs on every PR targeting `main`. Blocks merge if any step fails.
+- `flutter analyze` — zero issues required
+- `flutter test` — all tests must pass
+
+### CD — `.github/workflows/cd.yml`
+Runs on every push to `main` (i.e. after a PR is merged).
+- Builds `flutter build web --release`
+- Deploys to Firebase Hosting (disabled until Firebase is configured)
+
+### Enabling Firebase deploy
+Once Firebase project is initialized, add two secrets to the repo:
+
+| Secret | How to get it |
+|---|---|
+| `FIREBASE_TOKEN` | Run `firebase login:ci` locally, copy the printed token |
+| `FIREBASE_PROJECT_ID` | Your Firebase project ID (e.g. `artwork-critics-12345`) |
+
+Add at: **GitHub repo → Settings → Secrets and variables → Actions → New repository secret**
+
+Then uncomment the deploy step in `.github/workflows/cd.yml`.
 
 ---
 
